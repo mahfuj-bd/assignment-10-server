@@ -14,7 +14,7 @@ app.use(express.json());
 const port = process.env.PORT || 5000;
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://mrmahfuj:rvwqeudE1VQSQxss@cluster0.bolbqz3.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -31,16 +31,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const dataCollection = client.db('dataDB').collection('product')
-    
-    // post single data
-    app.post('/products', async(req, res) =>{
-        const product = req.body;
-        console.log('product', product);
-        const result = await dataCollection.insertOne(product);
-        console.log(result);
-        res.send(result)
-    });
+    const dataCollection = client.db('productDB').collection('product');
+
+    app.post('/products', async (req, res) =>{
+      const product = req.body;
+      console.log('product', product);
+      const result = await dataCollection.insertOne(product);
+      console.log(result);
+      res.send(result)
+    })
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
