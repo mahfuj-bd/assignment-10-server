@@ -31,7 +31,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const dataCollection = client.db('productDB').collection('product');
+    const dataCollection = client.db('dataDB').collection('product');
 
     app.post('/products', async (req, res) =>{
       const product = req.body;
@@ -40,6 +40,12 @@ async function run() {
       console.log(result);
       res.send(result)
     })
+    
+    app.get('/products',async(req,res)=>{
+      const cursor = dataCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+  })
 
 
     // Send a ping to confirm a successful connection
